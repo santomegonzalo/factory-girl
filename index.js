@@ -143,6 +143,7 @@
 
     factory.adapterFor = function (name) {
       console.log('=============== START: adapterFor ===============');
+      console.log('adapters: ', adapters);
       var adapter;
       if (adapters[name] !== undefined) {
         console.log('1 - ', adapters[name]);
