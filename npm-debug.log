@@ -1,0 +1,119 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/Cellar/node/6.5.0/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'publish' ]
+2 info using npm@3.10.3
+3 info using node@v6.5.0
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   escapedName: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/gsantomeosun/Documents/personal/factory-girl-default',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/gsantomeosun/.npm/factory-girl-default/1.0.1/package.tgz not in flight; packing
+9 verbose correctMkdir /Users/gsantomeosun/.npm correctMkdir not in flight; initializing
+10 info lifecycle factory-girl-default@1.0.1~prepublish: factory-girl-default@1.0.1
+11 silly lifecycle factory-girl-default@1.0.1~prepublish: no script for prepublish, continuing
+12 verbose tar pack [ '/Users/gsantomeosun/.npm/factory-girl-default/1.0.1/package.tgz',
+12 verbose tar pack   '/Users/gsantomeosun/Documents/personal/factory-girl-default' ]
+13 verbose tarball /Users/gsantomeosun/.npm/factory-girl-default/1.0.1/package.tgz
+14 verbose folder /Users/gsantomeosun/Documents/personal/factory-girl-default
+15 verbose addLocalTarball adding from inside cache /Users/gsantomeosun/.npm/factory-girl-default/1.0.1/package.tgz
+16 verbose correctMkdir /Users/gsantomeosun/.npm correctMkdir not in flight; initializing
+17 silly cache afterAdd factory-girl-default@1.0.1
+18 verbose afterAdd /Users/gsantomeosun/.npm/factory-girl-default/1.0.1/package/package.json not in flight; writing
+19 verbose correctMkdir /Users/gsantomeosun/.npm correctMkdir not in flight; initializing
+20 verbose afterAdd /Users/gsantomeosun/.npm/factory-girl-default/1.0.1/package/package.json written
+21 silly publish { name: 'factory-girl-default',
+21 silly publish   description: 'A factory library for Node.js and JavaScript inspired by factory-girl',
+21 silly publish   main: './index',
+21 silly publish   author: { name: 'Gonzalo Santome' },
+21 silly publish   version: '1.0.1',
+21 silly publish   keywords: [ 'factory', 'test', 'bdd', 'tdd', 'fixture' ],
+21 silly publish   repository:
+21 silly publish    { type: 'git',
+21 silly publish      url: 'git+ssh://git@github.com/aexmachina/factory-girl-default.git' },
+21 silly publish   license: 'MIT',
+21 silly publish   bugs: { url: 'http://github.com/aexmachina/factory-girl-default/issues' },
+21 silly publish   licenses:
+21 silly publish    [ { type: 'MIT',
+21 silly publish        url: 'http://github.com/aexmachina/factory-girl-default/raw/master/LICENSE' } ],
+21 silly publish   dependencies: { 'lodash.merge': '^3.3.2' },
+21 silly publish   devDependencies:
+21 silly publish    { bluebird: '^2.9.25',
+21 silly publish      chai: '^3.5.0',
+21 silly publish      mocha: '^2.2.5',
+21 silly publish      should: '^6.0.3' },
+21 silly publish   files: [ 'lib', 'test', 'index.js' ],
+21 silly publish   readme: '# factory-girl-default\n\n[![Build Status](https://travis-ci.org/aexmachina/factory-girl-default.png)](https://travis-ci.org/aexmachina/factory-girl-default)\n\n`factory-girl-default` is a factory library for [Node.js](http://nodejs.org/) and the browser that is inspired by [Factory\\_girl](http://github.com/thoughtbot/factory_girl). It works asynchronously and supports associations and the use of functions for generating attributes.\n\n## Installation\n\nNode.js:\n\n```bash\nnpm install factory-girl-default\n```\n\nTo use `factory-girl-default` in the browser or other JavaScript environments, just include `index.js` and access `window.Factory`.\n\n## Usage\n\n```javascript\nvar factory = require(\'factory-girl-default\');\nvar User    = require(\'../models/user\');\n\nfactory.define(\'user\', User, {\n  username: \'Bob\',\n  score: 50,\n});\n\nfactory.build(\'user\', function(err, user) {\n  console.log(user.attributes);\n  // => {username: \'Bob\', score: 50}\n});\n```\n\n## Defining Factories\n\n```javascript\nvar factory = require(\'factory-girl-default\');\nvar User    = require(\'../models/user\');\n\nfactory.define(\'user\', User, {\n  email: factory.sequence(function(n) {\n    return \'user\' + n + \'@demo.com\';\n  }),\n  // async functions can be used by accepting a callback as an argument\n  async: function(callback) {\n    somethingAsync(callback);\n  },\n  // you can refer to other attributes using `this`\n  username: function() {\n    return this.email;\n  }\n});\nfactory.build(\'user\', function(err, user) {\n  console.log(user.attributes);\n  // => {state: \'active\', email: \'user1@demo.com\', async: \'foo\', username: \'user1@demo.com\'}\n});\n```\n\n### Initializer function\nYou can provide a function instead of an object to initialize models.\nYou can pass the `buildOptions` object to the `factory.attrs`, `factory.build`, `factory.create` and the same object will be passed on to the initializer function.\n\n```javascript\nvar factory = require(\'factory-girl-default\');\nvar User    = require(\'../models/user\');\n\nfactory.define(\'user\', User, function (buildOptions) {\n  var attrs = {\n    email: factory.sequence(function(n) {\n      return \'user\' + n + \'@demo.com\';\n    }),\n    // async functions can be used by accepting a callback as an argument\n    async: function(callback) {\n      somethingAsync(callback);\n    },\n    // you can refer to other attributes using `this`\n    username: function() {\n      return this.email;\n    },\n    confirmed: false,\n    confirmedAt: null\n  };\n\n  if (buildOptions.confirmedUser) {\n    attrs.confirmed = true;\n    attrs.confirmedAt = new Date();\n  }\n\n  return attrs;\n});\nfactory.build(\'user\', function(err, user) {\n  console.log(user.attributes);\n  // => {state: \'active\', email: \'user1@demo.com\', async: \'foo\', username: \'user1@demo.com\'}\n});\n```\n\n### Options\n\nOptions can be provided when you define a model:\n\n```javascript\nfactory.define(\'user\', User, { foo: \'bar\' }, options);\n```\n\nAlternatively you can create a new factory that specifies options for all of its models:\n\n```javascript\nvar builder = factory.withOptions(options);\n```\n\nCurrently the supported options are:\n\n#### `afterBuild: function(instance, attrs, callback)`\n\nProvides a function that is called after the model is built.\n\n#### `afterCreate: function(instance, attrs, callback)`\n\nProvides a function that is called after a new model instance is saved.\n\n```javascript\nfactory.define(\'user\', User, {\n  foo: \'bar\'\n}, {\n  afterCreate: function(instance, attrs, callback) {\n    generateBazBasedOnID(instance.id, function(error, generatedBaz) {\n      if(error) {\n        callback(error, null);\n      } else {\n        instance.baz = generatedBaz;\n        callback(null, instance);\n      }\n    });\n  }\n});\n```\n\nOther builder options can be accessed, inside hooks, using `this.options`.\n\n## Defining Associations\n\n```javascript\nfactory.define(\'post\', Post, {\n  // create associations using factory.assoc(model, key) or factory.assoc(\'user\') to return the user object itself.\n  user_id: factory.assoc(\'user\', \'id\'),\n  // create array of associations using factory.assocMany(model, key, num)\n  comments: factory.assocMany(\'comment\', \'text\', 2)\n});\nfactory.create(\'post\', function(err, post) {\n  console.log(post.attributes);\n  // => { id: 1, user_id: 1, comments: [{ text: \'hello\' }, { text: \'hello\' }] }\n});\n```\n\nBe aware that `assoc()` will always create associated records, even when `factory.build()` is called.\nYou can use `assocBuild()`, which will always build associated records.\n\n## Defining Sequences\n\n```javascript\nfactory.define(\'post\', Post, {\n  // Creates a new sequence that returns the next number in the sequence for\n  // each created instance, starting with 1.\n  num: factory.sequence(),\n  // factory.sequence can be abbreviated as factory.seq\n  email: factory.seq(function(n) {\n    return \'email\' + n + \'@test.com\';\n  }),\n  // Can also be async\n  asyncProp: factory.seq(function(n, callback) {\n    somethingAsync(n, callback);\n  })\n});\n```\n\n## Using Factories\n\n### Factory#attrs\n\nGenerates and returns attrs.\n\n```javascript\nfactory.attrs(\'post\', function(err, postAttrs) {\n  // postAttrs is a post attributes\n  console.log(postAttrs);\n  // => {title: \'Hello\', authorEmail: \'user1@demo.com\'}\n});\n\nfactory.attrs(\'post\', {title: \'Foo\', content: \'Bar\'}, function(err, postAttrs) {\n  // build post attrs and override title and content\n});\n```\n\nIn case you have defined your factory with an [initializer function](#initializer-function), you can pass on `buildOptions` to be passed to the initializer function.\n\n```javascript\nfactory.attrs(\'user\', {}, { confirmedUser: true }, function (err, userAttrs) {\n  // userAttrs is a user attributes\n  console.log(userAttrs);\n}\n```\nNote that in case you want to pass buildOptions, you have to pass attributes parameter as well. Otherwise, the buildOptions will be treated as attribute parameters.\n\n### Factory#build\n\nCreates a new (unsaved) instance.\n\n```javascript\nfactory.build(\'post\', function(err, post) {\n  // post is a Post instance that is not saved\n});\nfactory.build(\'post\', {title: \'Foo\', content: \'Bar\'}, function(err, post) {\n  // build a post and override title and content\n});\n```\n\nIn case you have defined your factory with an [initializer function](#initializer-function), you can pass on `buildOptions` to be passed to the initializer function.\n\n```javascript\nfactory.build(\'user\', {}, { confirmedUser: true }, function (err, userAttrs) {\n  // userAttrs is a user attributes\n  console.log(userAttrs);\n}\n```\nNote that in case you want to pass buildOptions, you have to pass attributes parameter as well. Otherwise, the buildOptions will be treated as attribute parameters.\n\n### Factory#create\n\nBuilds and saves a new instance.\n\n```\nfactory.create(\'post\', function(err, post) {\n  // post is a saved Post instance\n});\n```\n\nIn case you have defined your factory with an [initializer function](#initializer-function), you can pass on `buildOptions` to be passed to the initializer function.\n\n```javascript\nfactory.create(\'user\', {}, { confirmedUser: true }, function (err, userAttrs) {\n  // userAttrs is a user attributes\n  console.log(userAttrs);\n}\n```\nNote that in case you want to pass buildOptions, you have to pass attributes parameter as well. Otherwise, the buildOptions will be treated as attribute parameters.\n\n\n### Factory#assoc(model, key = null, attrs = null, buildOptions = null)\n\nDefines an attribute of a model that creates an associated instance of another model.\n\nUse the `key` argument to return an attribute of the associated instance.\n\nYou can optionally provide attributes to the associated factory by passing an object as third\nargument.\n\nBe aware that `assoc()` will always _create_ associated records, even when `factory.build()` is\ncalled. You can use `assocBuild()`, which will always build associated records.\n\n### Factory#assocBuild(model, key = null, attrs = null, buildOptions = null)\n\nSame as `#assoc`, but builds the associated models rather than creating them.\n\n### Factory#assocMany(model, key, num, attrs = null, buildOptions = null)\n\nCreates multiple entries.\n\n### Factory#assocBuildMany\n\nSame as `#assocMany`, but builds the associated models rather than creating them.\n\n### Factory#buildMany\n\nAllow you to create a number of models at once.\n\n```javascript\nfactory.buildMany(\'post\', 10, function(err, posts) {\n  // build 10 posts\n});\n\nfactory.buildMany(\'post\', 10, [{withImage: true}, {veryLong: true}], function(err, posts) {\n  // build 10 posts, using build options for first two\n});\n\nfactory.buildMany(\'post\', 10, {withImage: true}, function(err, posts) {\n  // build 10 posts, using same build options for all of them\n});\n\nfactory.buildMany(\'post\', [{title: \'Foo\'}, {title: \'Bar\'}], function(err, posts) {\n  // build 2 posts using the specified attributes\n});\n\nfactory.buildMany(\'post\', [{title: \'Foo\'}, {title: \'Bar\'}], [{withImage: true}], function(err, posts) {\n  // build 2 posts using the specified attributes\n  // build first post using the build option\n});\n\nfactory.buildMany(\'post\', [{title: \'Foo\'}, {title: \'Bar\'}], {withImage: true}, function(err, posts) {\n  // build first 2 posts using the specified attributes using same build options for all of them\n});\n\n\nfactory.buildMany(\'post\', [{title: \'Foo\'}, {title: \'Bar\'}], 10, function(err, posts) {\n  // build 10 posts using the specified attributes for the first and second\n});\n\nfactory.buildMany(\'post\', [{title: \'Foo\'}, {title: \'Bar\'}], 10, [{withImage: true}, {veryLong: true}], function(err, posts) {\n  // build 10 posts using the specified attributes and build options for the first and second\n});\n\nfactory.buildMany(\'post\', [{title: \'Foo\'}, {title: \'Bar\'}], 10, {withImage: true}, function(err, posts) {\n  // build 10 posts using the specified attributes for the first and second\n  // uses same build options for all of them\n});\n\n\nfactory.buildMany(\'post\', {title: \'Foo\'}, 10, function(err, posts) {\n  // build 10 posts using the specified attributes for all of them\n});\n\nfactory.buildMany(\'post\', {title: \'Foo\'}, 10, [{withImage: true}, {veryLong: true}], function(err, posts) {\n  // build 10 posts using the specified attributes for all of them but using build options only for first two\n});\n\nfactory.buildMany(\'post\', {title: \'Foo\'}, 10, {withImage: true}, function(err, posts) {\n  // build 10 posts using the specified attributes and build options for all of them\n});\n\n```\n\n### Factory#createMany\n\n`factory.createMany` takes the same arguments as `buildMany`, but returns saved models.\n\n### Factory#buildSync\n\nWhen you have factories that don\'t use async property functions, you can use `buildSync()`.\nBe aware that `assoc()` is an async function, so it can\'t be used with `buildSync()`.\n\n```javascript\nvar doc = factory.buildSync(\'post\', {title: \'Foo\'});\n```\n\n### Factory#cleanup\n\nDestroys all of the created models. This is done using the adapter\'s `destroy` method.\n\n## Adapters\n\nAdapters provide [support for different databases and ORMs](https://www.npmjs.org/browse/keyword/factory-girl-default).\nAdapters can be registered for specific models, or as the \'default adapter\', which is used for any models for which an adapter has not been specified.\nSee the adapter docs for usage, but typical usage is:\n\n```javascript\n// use the bookshelf adapter as the default adapter\nrequire(\'factory-girl-default-bookshelf\')();\n```\n\n### `ObjectAdapter`\n\nYou can use the included ObjectAdapter to work without model classes. This adapter simply returns\nthe provided attribute objects.\n\n```\nfactory.setAdapter(new factory.ObjectAdapter());\n```\n\n### Using Different Adapters Per-model\n\n```\n// use an ObjectAdapter for the `post` model only\nfactory.setAdapter(new factory.ObjectAdapter(), \'post\');\n```\n\n## Creating new Factories\n\nYou can create multiple factories which have different settings:\n\n```javascript\nvar anotherFactory = new factory.Factory();\nvar BookshelfAdapter = require(\'factory-girl-default-bookshelf\').BookshelfAdapter;\nanotherFactory.setAdapter(new BookshelfAdapter()); // use the Bookshelf adapter\n```\n\n## Like Promises?\n\nMe too! Bluebird and q are both supported:\n\n```javascript\nvar bluebird = require(\'bluebird\');\nvar factory = require(\'factory-girl-default\').promisify(bluebird);\n```\n\n## History\n\nIt started out as a fork of [factory-lady](https://github.com/petejkim/factory-lady), but the fork deviated quite a bit. This module uses an adapter to talk to your models so it can support different ORMs such as [Bookshelf](https://github.com/aexmachina/factory-girl-default-bookshelf),  [Sequelize](https://github.com/aexmachina/factory-girl-default-sequelize), [JugglingDB](https://github.com/rehanift/factory-girl-default-jugglingdb), and [Mongoose](https://github.com/jesseclark/factory-girl-default-mongoose) (and doesn\'t use `throw` for errors that might occur during save).\n\n## License\n\nCopyright (c) 2014 Simon Wade. This software is licensed under the [MIT License](http://github.com/petejkim/factory-lady/raw/master/LICENSE).\nCopyright (c) 2011 Peter Jihoon Kim. This software is licensed under the [MIT License](http://github.com/petejkim/factory-lady/raw/master/LICENSE).\n',
+21 silly publish   readmeFilename: 'README.md',
+21 silly publish   gitHead: 'b3b65a7f49d89aecde6fd5b99994e787642211ca',
+21 silly publish   homepage: 'https://github.com/aexmachina/factory-girl-default#readme',
+21 silly publish   _id: 'factory-girl-default@1.0.1',
+21 silly publish   scripts: {},
+21 silly publish   _shasum: 'eacdc0aa5dd7acdf8fd6474118ce9f1fbceec74a',
+21 silly publish   _from: '.' }
+22 verbose getPublishConfig undefined
+23 silly mapToRegistry name factory-girl-default
+24 silly mapToRegistry using default registry
+25 silly mapToRegistry registry https://registry.npmjs.org/
+26 silly mapToRegistry data Result {
+26 silly mapToRegistry   raw: 'factory-girl-default',
+26 silly mapToRegistry   scope: null,
+26 silly mapToRegistry   escapedName: 'factory-girl-default',
+26 silly mapToRegistry   name: 'factory-girl-default',
+26 silly mapToRegistry   rawSpec: '',
+26 silly mapToRegistry   spec: 'latest',
+26 silly mapToRegistry   type: 'tag' }
+27 silly mapToRegistry uri https://registry.npmjs.org/factory-girl-default
+28 verbose publish registryBase https://registry.npmjs.org/
+29 silly publish uploading /Users/gsantomeosun/.npm/factory-girl-default/1.0.1/package.tgz
+30 verbose request uri https://registry.npmjs.org/factory-girl-default
+31 verbose request sending authorization for write operation
+32 info attempt registry request try #1 at 3:11:43 PM
+33 verbose request using bearer token for auth
+34 verbose request id edf6c8f461005c1b
+35 http request PUT https://registry.npmjs.org/factory-girl-default
+36 http 403 https://registry.npmjs.org/factory-girl-default
+37 verbose headers { 'content-type': 'application/json',
+37 verbose headers   'cache-control': 'max-age=300',
+37 verbose headers   'content-length': '95',
+37 verbose headers   'accept-ranges': 'bytes',
+37 verbose headers   date: 'Fri, 07 Oct 2016 13:11:44 GMT',
+37 verbose headers   via: '1.1 varnish',
+37 verbose headers   connection: 'keep-alive',
+37 verbose headers   'x-served-by': 'cache-fra1235-FRA',
+37 verbose headers   'x-cache': 'MISS',
+37 verbose headers   'x-cache-hits': '0',
+37 verbose headers   'x-timer': 'S1475845903.199358,VS0,VE1218',
+37 verbose headers   vary: 'Accept-Encoding' }
+38 verbose request invalidating /Users/gsantomeosun/.npm/registry.npmjs.org/factory-girl-default on PUT
+39 error publish Failed PUT 403
+40 verbose stack Error: "You cannot publish over the previously published version 1.0.1." : factory-girl-default
+40 verbose stack     at makeError (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+40 verbose stack     at CachingRegistryClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:252:14)
+40 verbose stack     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+40 verbose stack     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:200:22)
+40 verbose stack     at emitTwo (events.js:106:13)
+40 verbose stack     at Request.emit (events.js:191:7)
+40 verbose stack     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1067:10)
+40 verbose stack     at emitOne (events.js:101:20)
+40 verbose stack     at Request.emit (events.js:188:7)
+40 verbose stack     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:988:12)
+41 verbose statusCode 403
+42 verbose pkgid factory-girl-default
+43 verbose cwd /Users/gsantomeosun/Documents/personal/factory-girl-default
+44 error Darwin 16.0.0
+45 error argv "/usr/local/Cellar/node/6.5.0/bin/node" "/usr/local/bin/npm" "publish"
+46 error node v6.5.0
+47 error npm  v3.10.3
+48 error code E403
+49 error "You cannot publish over the previously published version 1.0.1." : factory-girl-default
+50 error If you need help, you may report this error at:
+50 error     <https://github.com/npm/npm/issues>
+51 verbose exit [ 1, true ]
