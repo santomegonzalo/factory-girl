@@ -142,23 +142,14 @@
     factory.seq = factory.sequence;
 
     factory.adapterFor = function (name) {
-      console.log('=============== START: adapterFor ===============');
-      console.log('adapters: ', adapters);
       var adapter;
       if (adapters[name] !== undefined) {
-        console.log('1 - ', adapters[name]);
         adapter = adapters[name];
       } else if (Object.keys(adapters).length > 0) {
-        console.log('2 - ', adapters[Object.keys(adapters)[0]], adapters);
         adapter = adapters[Object.keys(adapters)[0]];
       } else {
-        console.log('3 - ', defaultAdapter);
         adapter = defaultAdapter;
       }
-
-      console.log('selected adapter: ', adapter);
-      console.log('=============== END: adapterFor ===============');
-
       return adapter;
     };
 
@@ -353,10 +344,6 @@
           throw new Error("No factory defined for model '" + name + "'");
         }
         var model = factories[name].model;
-        console.log('===========');
-        console.log('factory name!');
-        console.log(factories[name]);
-
         attrs = merge(copy(factories[name].attributes), attrs);
         var names = keys(attrs);
         for (var i = 0; i < names.length; i++) {
@@ -370,12 +357,9 @@
         }
 
         var adapter;
-        console.log(model.build);
         if (model.build === undefined) {
-          console.log('default adapter');
           adapter = defaultAdapter;
         } else {
-          console.log('custom adater');
           adapter = factory.adapterFor(name);
         }
 
@@ -539,11 +523,8 @@
   };
 
   Adapter.prototype.build = function (Model, props) {
-    console.log('this is the build!');
     var doc = new Model();
-    console.log('here is the doc', doc);
     this.set(props, doc, Model);
-    console.log('and here is how the doc looks', doc);
     return doc;
   };
   Adapter.prototype.get = function (doc, attr, Model) {
