@@ -518,8 +518,11 @@
   };
 
   Adapter.prototype.build = function (Model, props) {
+    console.log('this is the build!');
     var doc = new Model();
+    console.log('here is the doc', doc);
     this.set(props, doc, Model);
+    console.log('and here is how the doc looks', doc);
     return doc;
   };
   Adapter.prototype.get = function (doc, attr, Model) {
