@@ -148,13 +148,15 @@
       if (adapters[name] !== undefined) {
         console.log('1 - ', adapters[name]);
         adapter = adapters[name];
-      } else if (adapters.length > 0) {
-        console.log('2 - ', adapters[0], adapters);
-        adapter = adapters[0];
+      } else if (Object.keys(adapters).length > 0) {
+        console.log('2 - ', adapters[Object.keys(adapters)[0]], adapters);
+        adapter = adapters[Object.keys(adapters)[0]];
       } else {
         console.log('3 - ', defaultAdapter);
         adapter = defaultAdapter;
       }
+
+      console.log('selected adapter: ', adapter);
       console.log('=============== END: adapterFor ===============');
 
       return adapter;
