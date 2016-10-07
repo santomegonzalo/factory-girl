@@ -349,12 +349,13 @@
         }
 
         var adapter;
+        console.log(model.build);
         if (model.build) {
           adapter = factory.adapterFor(name);
         } else {
           adapter = defaultAdapter;
         }
-        
+
         return adapter.build(model, attrs);
       };
 
