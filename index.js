@@ -142,7 +142,13 @@
     factory.seq = factory.sequence;
 
     factory.adapterFor = function (name) {
-      return adapters[name] || defaultAdapter;
+      if (adapters[name] !== undefined) {
+        return adapters[name];
+      } else if (adapters.length > 0) {
+        return adapters[0];
+      } else {
+        return defaultAdapter;
+      }
     };
 
     factory.setAdapter = function (adapter, name) {
@@ -336,6 +342,10 @@
           throw new Error("No factory defined for model '" + name + "'");
         }
         var model = factories[name].model;
+        console.log('===========');
+        console.log('factory name!');
+        console.log(factories[name]);
+
         attrs = merge(copy(factories[name].attributes), attrs);
         var names = keys(attrs);
         for (var i = 0; i < names.length; i++) {
