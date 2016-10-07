@@ -1,23 +1,23 @@
-# factory-girl
+# factory-girl-default
 
-[![Build Status](https://travis-ci.org/aexmachina/factory-girl.png)](https://travis-ci.org/aexmachina/factory-girl)
+[![Build Status](https://travis-ci.org/aexmachina/factory-girl-default.png)](https://travis-ci.org/aexmachina/factory-girl-default)
 
-`factory-girl` is a factory library for [Node.js](http://nodejs.org/) and the browser that is inspired by [Factory\_girl](http://github.com/thoughtbot/factory_girl). It works asynchronously and supports associations and the use of functions for generating attributes.
+`factory-girl-default` is a factory library for [Node.js](http://nodejs.org/) and the browser that is inspired by [Factory\_girl](http://github.com/thoughtbot/factory_girl). It works asynchronously and supports associations and the use of functions for generating attributes.
 
 ## Installation
 
 Node.js:
 
 ```bash
-npm install factory-girl
+npm install factory-girl-default
 ```
 
-To use `factory-girl` in the browser or other JavaScript environments, just include `index.js` and access `window.Factory`.
+To use `factory-girl-default` in the browser or other JavaScript environments, just include `index.js` and access `window.Factory`.
 
 ## Usage
 
 ```javascript
-var factory = require('factory-girl');
+var factory = require('factory-girl-default');
 var User    = require('../models/user');
 
 factory.define('user', User, {
@@ -34,7 +34,7 @@ factory.build('user', function(err, user) {
 ## Defining Factories
 
 ```javascript
-var factory = require('factory-girl');
+var factory = require('factory-girl-default');
 var User    = require('../models/user');
 
 factory.define('user', User, {
@@ -61,7 +61,7 @@ You can provide a function instead of an object to initialize models.
 You can pass the `buildOptions` object to the `factory.attrs`, `factory.build`, `factory.create` and the same object will be passed on to the initializer function.
 
 ```javascript
-var factory = require('factory-girl');
+var factory = require('factory-girl-default');
 var User    = require('../models/user');
 
 factory.define('user', User, function (buildOptions) {
@@ -80,7 +80,7 @@ factory.define('user', User, function (buildOptions) {
     confirmed: false,
     confirmedAt: null
   };
-  
+
   if (buildOptions.confirmedUser) {
     attrs.confirmed = true;
     attrs.confirmedAt = new Date();
@@ -347,13 +347,13 @@ Destroys all of the created models. This is done using the adapter's `destroy` m
 
 ## Adapters
 
-Adapters provide [support for different databases and ORMs](https://www.npmjs.org/browse/keyword/factory-girl).
+Adapters provide [support for different databases and ORMs](https://www.npmjs.org/browse/keyword/factory-girl-default).
 Adapters can be registered for specific models, or as the 'default adapter', which is used for any models for which an adapter has not been specified.
 See the adapter docs for usage, but typical usage is:
 
 ```javascript
 // use the bookshelf adapter as the default adapter
-require('factory-girl-bookshelf')();
+require('factory-girl-default-bookshelf')();
 ```
 
 ### `ObjectAdapter`
@@ -378,7 +378,7 @@ You can create multiple factories which have different settings:
 
 ```javascript
 var anotherFactory = new factory.Factory();
-var BookshelfAdapter = require('factory-girl-bookshelf').BookshelfAdapter;
+var BookshelfAdapter = require('factory-girl-default-bookshelf').BookshelfAdapter;
 anotherFactory.setAdapter(new BookshelfAdapter()); // use the Bookshelf adapter
 ```
 
@@ -388,12 +388,12 @@ Me too! Bluebird and q are both supported:
 
 ```javascript
 var bluebird = require('bluebird');
-var factory = require('factory-girl').promisify(bluebird);
+var factory = require('factory-girl-default').promisify(bluebird);
 ```
 
 ## History
 
-It started out as a fork of [factory-lady](https://github.com/petejkim/factory-lady), but the fork deviated quite a bit. This module uses an adapter to talk to your models so it can support different ORMs such as [Bookshelf](https://github.com/aexmachina/factory-girl-bookshelf),  [Sequelize](https://github.com/aexmachina/factory-girl-sequelize), [JugglingDB](https://github.com/rehanift/factory-girl-jugglingdb), and [Mongoose](https://github.com/jesseclark/factory-girl-mongoose) (and doesn't use `throw` for errors that might occur during save).
+It started out as a fork of [factory-lady](https://github.com/petejkim/factory-lady), but the fork deviated quite a bit. This module uses an adapter to talk to your models so it can support different ORMs such as [Bookshelf](https://github.com/aexmachina/factory-girl-default-bookshelf),  [Sequelize](https://github.com/aexmachina/factory-girl-default-sequelize), [JugglingDB](https://github.com/rehanift/factory-girl-default-jugglingdb), and [Mongoose](https://github.com/jesseclark/factory-girl-default-mongoose) (and doesn't use `throw` for errors that might occur during save).
 
 ## License
 

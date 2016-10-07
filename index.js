@@ -347,7 +347,14 @@
             attrs[key] = fn.call(attrs);
           }
         }
-        var adapter = factory.adapterFor(name);
+
+        var adapter;
+        if (model.build) {
+          adapter = factory.adapterFor(name);
+        } else {
+          adapter = defaultAdapter;
+        }
+        
         return adapter.build(model, attrs);
       };
 
