@@ -350,10 +350,12 @@
 
         var adapter;
         console.log(model.build);
-        if (model.build) {
-          adapter = factory.adapterFor(name);
-        } else {
+        if (model.build === undefined) {
+          console.log('default adapter');
           adapter = defaultAdapter;
+        } else {
+          console.log('custom adater');
+          adapter = factory.adapterFor(name);
         }
 
         return adapter.build(model, attrs);
