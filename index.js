@@ -142,13 +142,21 @@
     factory.seq = factory.sequence;
 
     factory.adapterFor = function (name) {
+      console.log('=============== START: adapterFor ===============');
+      let adapter;
       if (adapters[name] !== undefined) {
-        return adapters[name];
+        console.log('1 - ', adapters[name]);
+        adapter = adapters[name];
       } else if (adapters.length > 0) {
-        return adapters[0];
+        console.log('2 - ', adapters[0], adapters);
+        adapter = adapters[0];
       } else {
-        return defaultAdapter;
+        console.log('3 - ', defaultAdapter);
+        adapter = defaultAdapter;
       }
+      console.log('=============== END: adapterFor ===============');
+
+      return adapter;
     };
 
     factory.setAdapter = function (adapter, name) {
