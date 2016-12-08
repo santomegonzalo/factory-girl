@@ -193,7 +193,7 @@
     };
 
     factory.cleanup = function (callback) {
-      asyncForEach(created.reverse(), function (tuple, cb) {
+      asyncForEach(created, function (tuple, cb) {
         var name = tuple[0],
           doc = tuple[1],
           adapter = factory.adapterFor(name),
